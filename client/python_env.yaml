@@ -1,4 +1,4 @@
-name: .mnist-pytorch
+name: .nmrpred-pytorch
 build_dependencies:
   - pip
   - setuptools
