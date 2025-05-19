@@ -1,4 +1,6 @@
 entry_points:
+  build:
+    command: python model.py
   predict:
     command: python3 predict.py
   train:
