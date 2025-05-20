@@ -4,7 +4,7 @@ import json
 import yaml
 import torch
 import collections
-
+import numpy as np
 
 def np_to_weights(weights_np):
     weights = collections.OrderedDict()
@@ -20,7 +20,8 @@ def validate(model, data,loss, settings):
 
     def evaluate(model, loss, dataloader):
         model.eval()
-        train_loss = 0
+        meanSquaredError = 0
+        meanAverageError = 0
         with torch.no_grad():
             for x, y in dataloader:
     
@@ -36,13 +37,12 @@ def validate(model, data,loss, settings):
                     input_mask[i, int(torch.FloatTensor(row)[70401].item())] = 1
                     input[i, int(torch.FloatTensor(row)[70401].item())] = float(y[i].item())
 
-                train_loss += batch_size * loss(output, input, input_mask).item()
+                meanSquaredError = ((output - input) ** 2).mean()
+                meanAverageError = (np.abs(output - input)).mean()
 
-                # pred = output.argmax(dim=1, keepdim=True)
-                # train_correct += pred.eq(y.view_as(pred)).sum().item()
-            train_loss /= batch_size
-            train_acc = train_correct / len(dataloader.dataset)
-        return float(train_loss), float(train_acc)
+            meanAverageError /= batch_size
+            meanSquaredError /= batch_size
+        return float(meanAverageError), float(meanSquaredError)
 
     # # Load train data
     # try:
@@ -88,8 +88,8 @@ def validate(model, data,loss, settings):
                 "classification_report": 'unevaluated',
                 # "training_loss": training_loss,
                 # "training_accuracy": training_acc,
-                "test_loss": test_loss,
-                "test_accuracy": test_acc,
+                "MAE": test_loss,
+                "MSE": test_acc,
             }
 
     print("-- VALIDATION COMPLETE! --", flush=True)
