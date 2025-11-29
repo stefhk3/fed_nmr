@@ -6,7 +6,7 @@ test_samples: 64
 bias: 0.7
 # Parameters for local training
 batch_size: 32
-epochs: 1
+epochs: 5
 
 exp_data:
   data :

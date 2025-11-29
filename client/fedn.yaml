@@ -1,9 +1,11 @@
 entry_points:
+  train:
+    command: python train.py
+  validate:
+    command: python validate.py
   build:
     command: python model.py
-  predict:
-    command: python3 predict.py
-  train:
-    command: python3 train.py
-  validate:
-    command: python3 validate.py
+  startup:
+    command: echo "Preparing data files. Please check CSV files are in place."
+
+python_env: python_env.yaml

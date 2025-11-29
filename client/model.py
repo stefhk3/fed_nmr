@@ -8,7 +8,8 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 from fedn.utils.helpers.helpers import get_helper
 import collections
-
+HELPER_MODULE = "numpyhelper"
+helper = get_helper(HELPER_MODULE)
 def create_seed_model(exp_config):
 	net_params = exp_config['net_params']
 	net_name = exp_config['net_name']
@@ -19,10 +20,6 @@ def create_seed_model(exp_config):
 	model = eval(net_name)(**net_params)
 	
 	return model
-
-
-
-
 
 class GraphVertConfigBootstrapWithMultiMax(nn.Module):
 	def __init__(self, g_feature_n=-1, g_feature_out_n=None, 
